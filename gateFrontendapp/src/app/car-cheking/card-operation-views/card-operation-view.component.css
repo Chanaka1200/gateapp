@@ -1,0 +1,75 @@
+
+.example-button-row{
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.cancle-button{
+    margin-left: 10px;
+}
+
+.col {
+    flex-basis: 0;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    max-width: 50%;
+}
+
+.container{
+    margin-top: 5px;
+}
+
+.detail-area{
+    padding-top: 5px;
+    /*padding-left: 17px;*/
+}
+
+.snapshot{
+    padding-top: 20px;
+}
+
+.camera-div{
+    padding-top: 20px;
+}
+
+.front-image{
+    padding-top: 20px;
+    /*padding-left: 20px;*/
+}
+
+.back-image{
+    padding-top: 20px;
+    padding-left: 30px;
+}
+
+.small-text{
+    font-size: smaller;
+}
+
+.button-row{
+    padding-top: 0px;
+}
+
+.contant-container{
+    margin-top: 0px !important;
+}
+
+.payment-container{
+    margin-top: 20px !important;
+}
+
+.pay-card{
+    padding-top: 10px;
+}
+
+.card-details{
+    width: 100%;
+}
+
+.button-row-pay{
+    padding-left: 0px !important;
+}
+
+.col-md-5{
+    margin-right: 61px;
+}

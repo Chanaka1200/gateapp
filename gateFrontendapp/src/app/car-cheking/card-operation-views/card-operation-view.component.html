@@ -1,0 +1,182 @@
+<div class="container-fluid">
+  <div class="row ">
+    <mat-tab-group style="width: 100%;">
+      <mat-tab label="Check In">
+        <div class="container-fluid">
+          <div class="container">
+            <div class="row input-row-snapshot">
+              <mat-form-field class="example-form-field">
+                <mat-label>Barcode</mat-label>
+                <input matInput type="text" [(ngModel)]="dataBarcode">
+                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="dataBarcode=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              <div class="example-button-row">
+                <button mat-raised-button color="primary" (click)="triggerSnapshot(dataBarcode);">Take snapshot</button>
+              </div>
+            </div>
+            <div class="row">
+              <p class="small-text">Checking Time</p>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="camera-div">
+                <webcam [height]="400" [width]="400" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+                  *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                  [videoOptions]="videoOptions" [imageQuality]="1" (cameraSwitched)="cameraWasSwitched($event)"
+                  (initError)="handleInitError($event)" [hidden]="true"></webcam>
+              </div>
+              <h4 *ngIf="errors.length > 0">Messages:</h4>
+              <ul *ngFor="let error of errors">
+                <li>{{error | json}}</li>
+              </ul>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-5" *ngIf="webcamImage">
+                <img [src]="webcamImage.imageAsDataUrl" [height]="300" [width]="400" />
+                <p>Front Image</p>
+              </div>
+              <div class="col-md-5" *ngIf="webcamImage">
+                <img [src]="webcamImage.imageAsDataUrl" [height]="300" [width]="400" />
+                <p>Back Image</p>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-5" *ngIf="webcamImage">
+                <img [src]="webcamImage.imageAsDataUrl" [height]="300" [width]="400" />
+                <p>Front Out Image</p>
+              </div>
+              <div class="col-md-5" *ngIf="webcamImage">
+                <img [src]="webcamImage.imageAsDataUrl" [height]="300" [width]="400" />
+                <p>Back Out Image</p>
+              </div>
+            </div>
+            <div class="row button-row">
+              <button mat-raised-button color="primary" (click)="saveOperation(webcamImage.imageAsDataUrl)" [disabled]="btnSaveDisable">OK</button>
+              <button mat-raised-button color="primary" class="cancle-button" (click)="clearChecking()">Clear</button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Check Out">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <div class="container">
+                <div class="row input-row-snapshot">
+                  <mat-form-field class="example-form-field">
+                    <mat-label>Barcode</mat-label>
+                    <input matInput type="text" [(ngModel)]="checkOutBarcode"
+                      (keyup)="barcodeGetKeyChange($event.target.value)">
+                    <button mat-button *ngIf="geValue" matSuffix mat-icon-button aria-label="Clear"
+                      (click)="checkOutBarcode=''">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <div class="example-button-row">
+                    <button mat-raised-button color="primary" (click)="getCardDetails(checkOutBarcode);">View Details</button>
+                  </div>
+                </div>
+              </div>
+              <div class="container contant-container" >
+                <div class="row detail-area">
+                  <div class="container contant-container">
+                    <div class="row">
+                      <p class="small-text">Bar Code : {{outBarcode}}</p>
+                    </div>
+                    <div class="row">
+                      <p class="small-text">Check In : {{outCheckIn | date:'yyyy-MM-dd HH:mm:ss a'}}</p>
+                    </div>
+                    <div class="row">
+                      <p class="small-text">Check Out: {{outCheckOut | date:'yyyy-MM-dd HH:mm:ss a'}}</p>
+                    </div>
+                    <div class="row">
+                      <p class="small-text">Price : {{outPrice}}</p>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 button-row-pay">
+                        <button mat-raised-button color="primary" (click)="viewPay();">View Pay</button>
+                      </div>
+                      <div class="col-md-4">
+                        <button mat-raised-button (click) = "clearCheckOutButton()">Clear</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="container payment-container" *ngIf="displayPay">
+                      <h6 style="padding-bottom: 15px">PAY</h6>
+                      <div class="row">
+                        <div class="col">
+                          <h6>Total :</h6>
+                        </div>
+                        <div class="col">
+                          <h6>{{outTotalPrice}}</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <h6 style="padding-top: 20px;">Cash :</h6>
+                        </div>
+                        <div class="col">
+                            <mat-form-field class="example-form-field">
+                              <!--<mat-label>Clearable input</mat-label>-->
+                              <input matInput type="text" [(ngModel)]="inputCashValue" (keyup)="balanceCalculate(inputCashValue)">
+                              <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear"
+                                (click)="inputCashValue=''">
+                                <mat-icon>close</mat-icon>
+                              </button>
+                            </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <h6>Balance :</h6>
+                        </div>
+                        <div class="col">
+                          <h6>{{outBalance}}</h6>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <button mat-raised-button color="primary" [disabled]="btnPrint">Print</button>
+                        </div>
+                        <div class="col-md-3">
+                          <button mat-raised-button color="primary" (click)="updateOperation()" [disabled]="btnUpdateDisable">Pay</button>
+                        </div>
+                        <div class="col-md-3">
+                          <button mat-raised-button (click)="clearCheckOutButton()">Clear All</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="container">
+                <div class="col">
+                  <div class="snapshot">
+                    <img [src]="frontImageLocal" [height]="200" [width]="300" />
+                  </div>
+                  <div class="snapshot">
+                    <img [src]="backImageLocal" [height]="200" [width]="300" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="snapshot">
+                    <img [src]="frontOutImageLocal" [height]="200" [width]="300" />
+                  </div>
+                  <div class="snapshot">
+                    <img [src]="backOutImageLocal" [height]="200" [width]="300" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

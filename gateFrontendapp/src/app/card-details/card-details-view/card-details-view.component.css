@@ -1,0 +1,16 @@
+.container{
+    margin-top: 50px;
+}
+
+.card-details{
+    max-width: 400px;
+    width: 100%;
+}
+
+.card-form-filed{
+    width:50vw
+}
+
+.card-row{
+    width: 100%;
+}
