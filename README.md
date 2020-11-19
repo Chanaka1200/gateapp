@@ -3,6 +3,7 @@
 ## Requirement
 
 need latest node js version
+higher than 8
 angular 8.3.29
 
 ### Error: Missing required argument #1
